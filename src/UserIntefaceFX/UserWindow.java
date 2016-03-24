@@ -10,12 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
+
 
 import java.time.LocalDate;
 
@@ -91,7 +90,6 @@ public class UserWindow {
 
         mainLayout.setPrefSize(800,600);
         Scene scene=new Scene(mainLayout);
-        //window.setFullScreen(true);
         window.setScene(scene);
         window.show();
     }
@@ -138,8 +136,13 @@ public class UserWindow {
         //button
         Button submitButton= new Button("Submit");
         submitButton.setPrefSize(80,50);
-                                                //Didn't make function coz too many parameters
+
+
+        //Didn't make function coz too many parameters
         submitButton.setOnAction(event -> {
+
+            UserWindow.statusLable.setText("");//ignore this line
+
             boolean allOk=false;
             int count=0;
             Account account=new Account();
@@ -180,6 +183,9 @@ public class UserWindow {
                 statusLable.setText("Account Successfully Added");
                 statusLable.setTextFill(Color.web("Green"));
                 table.getItems().addAll(account);
+                UserWindow.statusLable.setTextFill(Color.web("green"));
+                UserWindow.statusLable.setText("New Row Added");
+
             }
 
         });
@@ -204,11 +210,17 @@ public class UserWindow {
 
     public static void Delete(){
         ObservableList<Account> accountSelected , allAccounts;
-        allAccounts=table.getItems();
         accountSelected=table.getSelectionModel().getSelectedItems();
-        accountSelected.forEach(allAccounts::remove);
-        statusLable.setText("Row Deleted");
-        statusLable.setTextFill(Color.web("Green"));
+        allAccounts=table.getItems();
+        if(!table.getSelectionModel().isEmpty()){
+            accountSelected.forEach(allAccounts::remove);
+            statusLable.setText("Row Deleted");
+            statusLable.setTextFill(Color.web("Red"));
+        }
+        else {
+            statusLable.setText("No Rows Selected");
+            statusLable.setTextFill(Color.web("Blue"));
+        }
     }
 
 
