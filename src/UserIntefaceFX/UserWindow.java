@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -18,15 +19,17 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
-/**
- * Created by tazim on 3/23/2016.
- */
+
 public class UserWindow {
 
     public static Stage window=new Stage();
     public static TableView<Account> table;
     public static Label statusLable=new Label("");
+    public static Label balanceStatus=new Label("");
+    public static Label totalCreditStatus=new Label("");
+    public static Label totalDebitStatus=new Label("");
 
+    public static TextField valueTextField;
     public static void show(User user){
         window.setTitle("User:"+user.getName());
 
@@ -36,13 +39,33 @@ public class UserWindow {
         //topLayout
         VBox topLayout=new VBox(20);
         MenuBar menuBar=CustomMenuBar.createMenubar(user);
-        topLayout.getChildren().add(menuBar);
+
+
+        //statusBar
+        HBox accountStatus= new HBox(20);
+        Label balanceLable= new Label("Current Balance:");
+
+        balanceStatus= new Label(String.valueOf(user.getBalance()));
+        balanceStatus.setTextFill(Color.web("Green"));
+
+        Label totalCreditLable= new Label("Total Credit:");
+        Label totalDebitLable= new Label("Total Debit:");
+
+        totalCreditStatus.setText(String.valueOf(user.getTotalCredit()));
+        totalDebitStatus.setText(String.valueOf(user.getTotalDebit()));
+
+        totalCreditStatus.setTextFill(Color.web("Red"));
+        totalDebitStatus.setTextFill(Color.web("Green"));
+
+        accountStatus.getChildren().addAll(balanceLable,balanceStatus,totalCreditLable,totalCreditStatus,totalDebitLable,totalDebitStatus);
+
+        topLayout.getChildren().addAll(menuBar,accountStatus);
 
         //rightLayout
         VBox rightLayout=new VBox(20);
         Button addButton=new Button("+Add");
         addButton.setPrefSize(70,60);
-        addButton.setOnAction(event -> Add());
+        addButton.setOnAction(event -> Add(user));
 
         //CenterLayout
         table = new TableView<>();
@@ -76,7 +99,7 @@ public class UserWindow {
 
         Button deleteButton=new Button("Delete");
         deleteButton.setPrefSize(70,60);
-        deleteButton.setOnAction(event -> Delete());
+        deleteButton.setOnAction(event -> Delete(user));
 
         rightLayout.setAlignment(Pos.CENTER);
         rightLayout.getChildren().addAll(addButton,deleteButton);
@@ -94,7 +117,7 @@ public class UserWindow {
         window.show();
     }
 
-    public static void Add(){
+    public static void Add(User user){
         Stage addNewAccount= new Stage();
         addNewAccount.setTitle("Add New Account");
         addNewAccount.initModality(Modality.APPLICATION_MODAL);
@@ -119,7 +142,7 @@ public class UserWindow {
 
         title.setEditable(true);
 
-        TextField valueTextField= new TextField();
+        valueTextField= new TextField();
         valueTextField.setPromptText("Ex.500");
         valueTextField.setMaxSize(200,20);
 
@@ -183,8 +206,11 @@ public class UserWindow {
                 statusLable.setText("Account Successfully Added");
                 statusLable.setTextFill(Color.web("Green"));
                 table.getItems().addAll(account);
+
                 UserWindow.statusLable.setTextFill(Color.web("green"));
                 UserWindow.statusLable.setText("New Row Added");
+
+                updateAccountStatus(user);
 
             }
 
@@ -206,9 +232,10 @@ public class UserWindow {
         addNewAccount.setScene(scene);
         addNewAccount.show();
 
+
     }
 
-    public static void Delete(){
+    public static void Delete(User user){
         ObservableList<Account> accountSelected , allAccounts;
         accountSelected=table.getSelectionModel().getSelectedItems();
         allAccounts=table.getItems();
@@ -221,8 +248,52 @@ public class UserWindow {
             statusLable.setText("No Rows Selected");
             statusLable.setTextFill(Color.web("Blue"));
         }
+
+        updateAccountStatus(user);
     }
 
+    public static void updateAccountStatus(User user){
+        ObservableList<Account> allAcounts;
+        allAcounts=table.getItems();
+        //reset all values before calculating each time.
+        //it sums up all data each time
+        user.setBalance(0);
+        user.setTotalCredit(0);
+        user.setTotalDebit(0);
 
+
+        for (Account allAcount : allAcounts) {
+            //get value and account type then do stuff
+            double value = allAcount.getValue();
+            AccountType accountType = allAcount.getAccountType();
+
+            //Update credit/Debit and update Balance
+            if (accountType == AccountType.credit) {
+                user.addTotalCredit(value);
+            }
+
+            if (accountType == AccountType.debit) {
+                user.addTotalDebit(value);
+            }
+
+        }
+
+
+        //set color depnding on balance
+
+        if(user.getBalance()<0)
+        {
+            balanceStatus.setTextFill(Color.web("red"));
+        }
+        else
+        {
+            balanceStatus.setTextFill(Color.web("green"));
+        }
+
+        balanceStatus.setText(String.valueOf(user.getBalance()));
+        totalCreditStatus.setText(String.valueOf(user.getTotalCredit()));
+        totalDebitStatus.setText(String.valueOf(user.getTotalDebit()));
+
+    }
 
 }
