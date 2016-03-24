@@ -94,8 +94,11 @@ public class UserWindow {
         accountTypeColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
 
         //addColumns on table
-        table.getColumns().addAll(titleColumn,valueColumn,dateColumn,accountTypeColumn,commentColumn);
-
+        table.getColumns().add(titleColumn);
+        table.getColumns().add(valueColumn);
+        table.getColumns().add(dateColumn);
+        table.getColumns().add(accountTypeColumn);
+        table.getColumns().add(commentColumn);
 
         Button deleteButton=new Button("Delete");
         deleteButton.setPrefSize(70,60);
