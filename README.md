@@ -1,2 +1,0 @@
-# AccountBook
-Daily Income/Expense 
