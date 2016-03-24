@@ -30,8 +30,14 @@ public class UserWindow {
     public static Label totalDebitStatus=new Label("");
 
     public static TextField valueTextField;
+
+
     public static void show(User user){
         window.setTitle("User:"+user.getName());
+
+        //CenterLayout
+        table = user.getTable();
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         BorderPane mainLayout= new BorderPane();
 
@@ -67,38 +73,10 @@ public class UserWindow {
         addButton.setPrefSize(70,60);
         addButton.setOnAction(event -> Add(user));
 
-        //CenterLayout
-        table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
 
-        //columns
-        //title
-        TableColumn<Account,String> titleColumn=new TableColumn<>("Title");
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("accountTitle"));
 
-        //Value
-        TableColumn<Account,Double> valueColumn=new TableColumn<>("Value");
-        valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
-        //comment
-        TableColumn<Account,String> commentColumn=new TableColumn<>("Comment");
-        commentColumn.setCellValueFactory(new PropertyValueFactory<>("comment"));
-
-        //Date
-        TableColumn<Account,LocalDate> dateColumn=new TableColumn<>("Date");
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-        //AccountType
-        TableColumn<Account,AccountType> accountTypeColumn=new TableColumn<>("AccountType");
-        accountTypeColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
-
-        //addColumns on table
-        table.getColumns().add(titleColumn);
-        table.getColumns().add(valueColumn);
-        table.getColumns().add(dateColumn);
-        table.getColumns().add(accountTypeColumn);
-        table.getColumns().add(commentColumn);
 
         Button deleteButton=new Button("Delete");
         deleteButton.setPrefSize(70,60);
