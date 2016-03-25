@@ -6,18 +6,15 @@ import CoreClasses.User;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-
-import java.time.LocalDate;
 
 
 public class UserWindow {
@@ -29,7 +26,7 @@ public class UserWindow {
     public static Label totalCreditStatus=new Label("");
     public static Label totalDebitStatus=new Label("");
 
-    public static TextField valueTextField;
+
 
 
     public static void show(User user){
@@ -38,6 +35,7 @@ public class UserWindow {
         //CenterLayout
         table = user.getTable();
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setEditable(true);
 
         BorderPane mainLayout= new BorderPane();
 
@@ -69,10 +67,15 @@ public class UserWindow {
 
         //rightLayout
         VBox rightLayout=new VBox(20);
+
+        //Buttons
         Button addButton=new Button("+Add");
         addButton.setPrefSize(70,60);
         addButton.setOnAction(event -> Add(user));
 
+        Button editButton = new Button("Edit");
+        editButton.setPrefSize(70, 60);
+        editButton.setOnAction(event -> Edit(user, table));
 
 
 
@@ -83,7 +86,7 @@ public class UserWindow {
         deleteButton.setOnAction(event -> Delete(user));
 
         rightLayout.setAlignment(Pos.CENTER);
-        rightLayout.getChildren().addAll(addButton,deleteButton);
+        rightLayout.getChildren().addAll(addButton, editButton, deleteButton);
 
 
         //SetBorderPane
@@ -99,119 +102,18 @@ public class UserWindow {
     }
 
     public static void Add(User user){
-        Stage addNewAccount= new Stage();
-        addNewAccount.setTitle("Add New Account");
-        addNewAccount.initModality(Modality.APPLICATION_MODAL);
-        VBox vBox=new VBox(10);
-        vBox.setAlignment(Pos.CENTER);
+        AddAccountWindow.show(user);
+    }
 
-        //lables
-        Label titleLabel=new Label("Account Title");
-        Label valueLable=new Label("Value");
-        Label commentLable=new Label("Comment");
-        Label dateLable=new Label("Date");
-        Label accountTypeLable=new Label("Account Type");
-        Label statusLable= new Label("");
+    public static void Edit(User user, TableView<Account> table) {
 
-        //ComboBox
-        ComboBox<String> title=new ComboBox<>();
-        title.getItems().addAll(
-                "Food",
-                "Transport",
-                "Allowance"
-        );
-
-        title.setEditable(true);
-
-        valueTextField= new TextField();
-        valueTextField.setPromptText("Ex.500");
-        valueTextField.setMaxSize(200,20);
-
-        TextArea commentTextArea=new TextArea();
-        commentTextArea.setMaxSize(300,300);
-
-        DatePicker datePicker= new DatePicker();
-        datePicker.setValue(LocalDate.now());
-
-        ComboBox<AccountType> accountType=new ComboBox<>();
-        accountType.setValue(AccountType.credit);
-        accountType.getItems().addAll(AccountType.credit,AccountType.debit);
-
-        //button
-        Button submitButton= new Button("Submit");
-        submitButton.setPrefSize(80,50);
-
-
-        //Didn't make function coz too many parameters
-        submitButton.setOnAction(event -> {
-
-            UserWindow.statusLable.setText("");//ignore this line
-
-            boolean allOk=false;
-            int count=0;
-            Account account=new Account();
-
-            //title Check
-            if(title.getValue()!=null){
-                account.setAccountTitle(title.getValue());
-                count++;
-            }
-            else{
-                statusLable.setText("Please Enter A valid Title & press Enter");
-                statusLable.setTextFill(Color.web("Red"));
-                count--;
-            }
-
-            //Value Check
-            try {
-                double d = Double.parseDouble(valueTextField.getText());
-                account.setValue(d);
-                count++;
-            }
-            catch (NumberFormatException ex) {
-                statusLable.setText("Please Enter A valid Value in Numbers");
-                statusLable.setTextFill(Color.web("Red"));
-                count--;
-            }
-
-
-            account.setComment(commentTextArea.getText());
-            account.setDate(datePicker.getValue());
-            account.setAccountType(accountType.getValue());
-
-            if(count>=2){
-                allOk=true;
-            }
-
-            if(allOk){
-                statusLable.setText("Account Successfully Added");
-                statusLable.setTextFill(Color.web("Green"));
-                table.getItems().addAll(account);
-
-                UserWindow.statusLable.setTextFill(Color.web("green"));
-                UserWindow.statusLable.setText("New Row Added");
-
-                updateAccountStatus(user);
-
-            }
-
-        });
-
-
-
-
-        //add all items into vbox
-        vBox.getChildren().addAll(titleLabel,title);
-        vBox.getChildren().addAll(valueLable,valueTextField);
-        vBox.getChildren().addAll(commentLable,commentTextArea);
-        vBox.getChildren().addAll(dateLable,datePicker);
-        vBox.getChildren().addAll(accountTypeLable,accountType);
-        vBox.getChildren().addAll(submitButton,statusLable);
-
-        //set Scene and show
-        Scene scene = new Scene(vBox,400,450);
-        addNewAccount.setScene(scene);
-        addNewAccount.show();
+        if (!table.getSelectionModel().isEmpty()) {
+            EditAccountWindow.show(user, table);
+            updateAccountStatus(user);
+        } else {
+            statusLable.setText("No Rows Selected");
+            statusLable.setTextFill(Color.web("Blue"));
+        }
 
 
     }
@@ -220,17 +122,19 @@ public class UserWindow {
         ObservableList<Account> accountSelected , allAccounts;
         accountSelected=table.getSelectionModel().getSelectedItems();
         allAccounts=table.getItems();
+
         if(!table.getSelectionModel().isEmpty()){
             accountSelected.forEach(allAccounts::remove);
             statusLable.setText("Row Deleted");
             statusLable.setTextFill(Color.web("Red"));
+            updateAccountStatus(user);
         }
         else {
             statusLable.setText("No Rows Selected");
             statusLable.setTextFill(Color.web("Blue"));
         }
 
-        updateAccountStatus(user);
+
     }
 
     public static void updateAccountStatus(User user){
