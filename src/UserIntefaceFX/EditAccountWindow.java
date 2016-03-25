@@ -152,6 +152,7 @@ public class EditAccountWindow {
 
             UserWindow.statusLable.setTextFill(Color.web("green"));
             UserWindow.statusLable.setText("New Row Added");
+            table.refresh();
             UserWindow.updateAccountStatus(user);
 
         }
@@ -174,6 +175,7 @@ public class EditAccountWindow {
         statusLable.setTextFill(Color.web("Blue"));
         UserWindow.statusLable.setText("Row Edited");
         UserWindow.statusLable.setTextFill(Color.web("Green"));
+
         UserWindow.updateAccountStatus(user);
 
 
