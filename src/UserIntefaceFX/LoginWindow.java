@@ -15,9 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-/**
- * Created by tazim on 3/21/2016.
- */
 public class LoginWindow {
     public static Label status = new Label("");
 
@@ -96,6 +93,7 @@ public class LoginWindow {
 
     public static void Register(String name,String password,UI userInterface){
         if(userInterface.register(name,password)){
+            status.setTextFill(Color.web("Green"));
             status.setText("User Created");
         }
     }

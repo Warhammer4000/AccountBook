@@ -16,19 +16,20 @@ import java.time.LocalDate;
 
 public class AddAccountWindow {
     public static TextField valueTextField;
-    protected static Label statusLable = new Label("");
-    protected static TextArea commentTextArea = new TextArea();
-    protected static DatePicker datePicker = new DatePicker();
+    protected static Label statusLable;
+    protected static TextArea commentTextArea;
+    protected static DatePicker datePicker;
 
-
+    private static Stage window = new Stage();
     public static void setUpStage(User user) {
 
+        initialize();
 
         ComboBox<String> title = new ComboBox<>();
         ComboBox<AccountType> accountType = new ComboBox<>();
 
 
-        Stage window = new Stage();
+        window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Edit Account");
         VBox vBox = new VBox(10);
@@ -51,17 +52,6 @@ public class AddAccountWindow {
         );
 
         title.setEditable(true);
-
-        valueTextField = new TextField();
-        valueTextField.setPromptText("Ex.500");
-        valueTextField.setMaxSize(200, 20);
-
-
-        commentTextArea.setMaxSize(300, 300);
-
-
-        datePicker.setValue(LocalDate.now());
-
 
         accountType.setValue(AccountType.credit);
         accountType.getItems().addAll(AccountType.credit, AccountType.debit);
@@ -140,9 +130,30 @@ public class AddAccountWindow {
             UserWindow.statusLable.setTextFill(Color.web("green"));
             UserWindow.statusLable.setText("New Row Added");
             UserWindow.updateAccountStatus(user);
+            reset(title);
 
         }
     }
 
+    public static void initialize() {
+        valueTextField = new TextField();
+        valueTextField.setPromptText("Ex.500");
+        valueTextField.setMaxSize(200, 20);
 
+
+        statusLable = new Label("");
+
+
+        commentTextArea = new TextArea();
+        commentTextArea.setMaxSize(300, 300);
+
+        datePicker = new DatePicker();
+        datePicker.setValue(LocalDate.now());
+    }
+
+    public static void reset(ComboBox<String> title) {
+        valueTextField.setText("");
+        commentTextArea.setText("");
+        title.setValue("");
+    }
 }

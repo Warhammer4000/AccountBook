@@ -73,7 +73,7 @@ public class EditAccountWindow {
 
 
         //button
-        Button submitButton = new Button("Edit");
+        Button submitButton = new Button("Save");
         submitButton.setPrefSize(80, 50);
 
 

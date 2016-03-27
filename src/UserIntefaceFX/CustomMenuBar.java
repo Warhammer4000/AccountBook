@@ -9,13 +9,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-/**
- * Created by tazim on 3/23/2016.
- */
 public class CustomMenuBar {
     public static MenuBar createMenubar(User user){
         MenuBar menuBar=new MenuBar();
 
+        //AccountMenu
         Menu accountMenu= new Menu();
         accountMenu.setText("Account");
 
@@ -78,7 +76,6 @@ public class CustomMenuBar {
         UserWindow.window.close();
         LoginWindow.show(Main.userInterface);
     }
-
 
 
 }
