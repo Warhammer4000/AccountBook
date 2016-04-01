@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 public class UserWindow {
 
     public static Stage window=new Stage();
-    public static TableView<Account> table;
+
     public static Label statusLable=new Label("");
     public static Label balanceStatus=new Label("");
     public static Label totalCreditStatus=new Label("");
@@ -31,7 +31,7 @@ public class UserWindow {
 
     public static void show(User user){
         window.setTitle("User:"+user.getName());
-
+        TableView<Account> table;
         //CenterLayout
         table = user.getTable();
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -120,10 +120,10 @@ public class UserWindow {
 
     public static void Delete(User user){
         ObservableList<Account> accountSelected , allAccounts;
-        accountSelected=table.getSelectionModel().getSelectedItems();
-        allAccounts=table.getItems();
+        accountSelected = user.getTable().getSelectionModel().getSelectedItems();
+        allAccounts = user.getTable().getItems();
 
-        if(!table.getSelectionModel().isEmpty()){
+        if (!user.getTable().getSelectionModel().isEmpty()) {
             accountSelected.forEach(allAccounts::remove);
             statusLable.setText("Row Deleted");
             statusLable.setTextFill(Color.web("Red"));
@@ -139,7 +139,7 @@ public class UserWindow {
 
     public static void updateAccountStatus(User user){
         ObservableList<Account> allAcounts;
-        allAcounts=table.getItems();
+        allAcounts = user.getTable().getItems();
         //reset all values before calculating each time.
         //it sums up all data each time
         user.setBalance(0);

@@ -24,15 +24,33 @@ public class CustomMenuBar {
         MenuItem logout= new MenuItem("Logout");
         logout.setOnAction(event -> userLogout(user));
         accountMenu.getItems().add(logout);
+        //-------------------------------------------------------------------------------------------------------------
+
+        //TableMenu
+        Menu tableMenu = new Menu();
+        tableMenu.setText("Table Menu");
 
 
-        menuBar.getMenus().addAll(accountMenu);
+        /// unfinished
+        MenuItem clearTable = new MenuItem("Clear Table");
+        clearTable.setOnAction(e -> {
+            //resetTable(user);
+
+        });
+
+        tableMenu.getItems().add(clearTable);
+        //other menu
+
+        //------------------------------------------------------------------------------------------------------------------
+        menuBar.getMenus().addAll(accountMenu, tableMenu);
 
 
 
         return menuBar;
     }
 
+
+    //User Menu
     public static void passwordChange(User user){
         Stage passowordChangeWindow= new Stage();
         passowordChangeWindow.setTitle("Change Password");
@@ -76,6 +94,23 @@ public class CustomMenuBar {
         UserWindow.window.close();
         LoginWindow.show(Main.userInterface);
     }
+
+
+    //table Menu
+    public static void resetTable(User user) {
+
+
+        for (Object o : user.getTable().getItems()) {
+            user.getTable().getItems().remove(o);
+        }
+
+
+        UserWindow.statusLable.setText("Table Cleared");
+        UserWindow.statusLable.setTextFill(Color.web("Red"));
+        UserWindow.updateAccountStatus(user);
+    }
+
+
 
 
 }

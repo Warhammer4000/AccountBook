@@ -2,34 +2,29 @@ package CoreClasses;
 
 import UserIntefaceFX.LoginWindow;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.LinkedList;
 
-/**
- * Created by tazim on 3/21/2016.
- */
-public class UI {
+
+public class UI implements Serializable {
+    private static UI temp = null;
     private LinkedList<User> Users=new LinkedList<>();
 
+    public static UI getInstance() {
+
+        if (temp == null) {
+            return temp = new UI();
+        } else
+            return temp;
+    }
 
     public boolean register(String name, String password) {
-        //check if input is not empty
-        if(!name.isEmpty() && !password.isEmpty()){
-            //check if already exists
-                if(Search(name)==null){
-                    User temp = new User(name, password);
-                    Users.add(temp);
-                    return  true;
-                }
-                else {
-                    LoginWindow.status.setText("User Exists");
-                    return  false;
-                }
-
-        }
-        else {
-            LoginWindow.status.setText("Text Field Empty");
-            return  false;
-        }
+        if (validity(name, password)) {
+            User temp = new User(name, password);
+            Users.add(temp);
+            return true;
+        } else
+            return false;
 
 
     }
@@ -40,11 +35,11 @@ public class UI {
 
     public User Search(String name, String password) {
         int length = Users.size();
-        User temp=null;
+        User temp;
 
-        for (int i = 0; i < length; i++) {
-            temp = Users.get(i);
-            if (temp.getName().equals(name) && temp.getPassword().equals(password) ) {
+        for (CoreClasses.User User : Users) {
+            temp = User;
+            if (temp.getName().equals(name) && temp.getPassword().equals(password)) {
                 return temp;
             }
         }
@@ -55,10 +50,10 @@ public class UI {
 
     public User Search(String name) {
         int length = Users.size();
-        User temp=null;
+        User temp = ;
 
-        for (int i = 0; i < length; i++) {
-            temp = Users.get(i);
+        for (CoreClasses.User User : Users) {
+            temp = User;
             if (temp.getName().equals(name)) {
                 return temp;
             }
@@ -66,6 +61,23 @@ public class UI {
         temp=null;
         return temp;
 
+    }
+
+    public boolean validity(String name, String password) {
+        //check if input is not empty
+        if (!name.isEmpty() && !password.isEmpty()) {
+            //check if already exists
+            if (Search(name) == null) {
+                return true;
+            } else {
+                LoginWindow.status.setText("User Exists");
+                return false;
+            }
+
+        } else {
+            LoginWindow.status.setText("Text Field Empty");
+            return false;
+        }
     }
 
 }

@@ -1,11 +1,10 @@
 package CoreClasses;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-/**
- * Created by tazim on 3/21/2016.
- */
-public class Account {
+
+public class Account implements Serializable {
     private String accountTitle;
     private double value;
     private String comment;
@@ -17,7 +16,7 @@ public class Account {
         value = 0.00;
         comment = "";
         date = LocalDate.now();
-        accountType = accountType.debit;
+        accountType = AccountType.debit;
     }
 
     public Account(String accountTitle, double value, String comment, LocalDate date, AccountType accountType) {
@@ -31,23 +30,33 @@ public class Account {
     //getters
     public String getAccountTitle() {return accountTitle;}
 
-    public double getValue() {return value;}
+    //setters
+    public void setAccountTitle(String accountTitle) {
+        this.accountTitle = accountTitle;
+    }
 
-    public AccountType getAccountType() {return accountType;}
+    public double getValue() {
+        return value;
+    }
 
     public void setValue(double value) {this.value = value;}
 
-    public String getComment() {return comment;}
+    public AccountType getAccountType() {
+        return accountType;
+    }
 
-    //setters
-    public void setAccountTitle(String accountTitle) {this.accountTitle = accountTitle;}
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getComment() {
+        return comment;
+    }
 
     public void setComment(String comment) {this.comment = comment;}
 
     public LocalDate getDate() {return date;}
 
     public void setDate(LocalDate date) {this.date = date;}
-
-    public void setAccountType(AccountType accountType) {this.accountType = accountType;}
 
 }

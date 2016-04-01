@@ -4,11 +4,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.*;
 
 
-public class User {
+public class User implements Serializable {
     private TableView<Account> table;
     private String name;
     private String password;
@@ -17,7 +17,7 @@ public class User {
     private double totalDebit=0;
 
 
-    private LinkedList<Account> accountBook=new LinkedList<>();
+
 
     public User(String name, String password) {
         this.name = name;
@@ -64,20 +64,17 @@ public class User {
 
     }
 
+    public void clearTable() {
+        this.table = new TableView<>();
+        setTable();
+    }
+
     public double getTotalCredit() {
         return totalCredit;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
     public void setTotalCredit(double totalCredit) {
         this.totalCredit = totalCredit;
-    }
-
-    public void setTotalDebit(double totalDebit) {
-        this.totalDebit = totalDebit;
     }
 
     public void addTotalCredit(double Credit) {
@@ -91,6 +88,10 @@ public class User {
         return totalDebit;
     }
 
+    public void setTotalDebit(double totalDebit) {
+        this.totalDebit = totalDebit;
+    }
+
     public void addTotalDebit(double Debit) {
 
         this.totalDebit += Debit;
@@ -99,6 +100,10 @@ public class User {
 
     public double getBalance() {
         return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public void debitBalance(double debit) {
@@ -127,17 +132,7 @@ public class User {
         this.password = password;
     }
 
-    public void addAccount(Account item) {
-        accountBook.add(item);
-    }
 
-    public void clearAccountBook(){accountBook.clear();}
-
-    public  void removeAccount(int index){
-        accountBook.remove(index);
-    }
-
-    public LinkedList<Account> getAccountBook() {return accountBook;}
 
 
 }

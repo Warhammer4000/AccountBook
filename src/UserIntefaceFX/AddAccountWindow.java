@@ -125,7 +125,7 @@ public class AddAccountWindow {
         if (allOk) {
             statusLable.setText("Account Successfully Added");
             statusLable.setTextFill(Color.web("Green"));
-            UserWindow.table.getItems().addAll(account);
+            user.getTable().getItems().addAll(account);
 
             UserWindow.statusLable.setTextFill(Color.web("green"));
             UserWindow.statusLable.setText("New Row Added");
