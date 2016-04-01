@@ -50,7 +50,7 @@ public class UI implements Serializable {
 
     public User Search(String name) {
         int length = Users.size();
-        User temp = ;
+        User temp;
 
         for (CoreClasses.User User : Users) {
             temp = User;
