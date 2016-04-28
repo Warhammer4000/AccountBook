@@ -10,6 +10,10 @@
           <option name="url" value="https://github.com/sh0v0n/TimeAttack" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/sh0v0n/TimeAttack.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="C:\Users\tazim\OneDrive\4th sem vues\Java\Project" />
