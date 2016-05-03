@@ -96,7 +96,6 @@ public class LoginWindow {
         if(userInterface.register(name,password)){
             status.setTextFill(Color.web("Green"));
             status.setText("User Created");
-            Main.save();
         }
     }
 }
